@@ -33,44 +33,58 @@ export default class Register extends Component {
            this.canSubmit();
         });
     }
-
     
     canSubmit() {
       const { formValidity, formErrors } = this.state;
       let email = this.state.email;
       let password = this.state.password;
       let password2 = this.state.password2;
-      var emailflag;
-      var passwordflag;
-      var passwordmatchflag;
 
-      if(email.length > 0 && email.indexOf('@') !== -1 && email.indexOf('.') !== -1) {
-        emailflag = true;
+       if(email.length > 0 && email.indexOf('@') !== -1 && email.indexOf('.') !== -1) {
+        this.setState(function(state,props) {
+          return{
+          formValidity: Object.assign({}, this.state.formValidity, {email:true} )
+        }});
       } 
       else {
-        emailflag = false;
-
-      }
-
+       /*  this.setState(function(state,props) {
+          return{
+          formErrors: Object.assign({}, this.state.formErrors, {password:'Please enter a valid email'} ),
+          formValidity: Object.assign({}, this.state.formValidity, {email:false})
+        }}); */
+        console.log(formValidity); }
       if(password.length>=5) {
-        passwordflag = true;
+        this.setState(function(state,props) {
+          return{
+          formValidity: Object.assign({}, this.state.formValidity, {password:true} )
+        }});
       }
       else {
-        passwordflag = false;
+        this.setState(function(state,props) {
+          return{
+          formErrors: Object.assign({}, this.state.formErrors, {password:'Please enter a valid password'} ),
+          formValidity: Object.assign({}, this.state.formValidity, {password:false})
+        }});
         }
-        
+        console.log(formValidity);
       if(password2===password) {
-       passwordmatchflag = true;
+        this.setState(function(state,props) {
+          return{
+          formValidity: Object.assign({}, this.state.formValidity, {passwordmatch:true} )
+        }});
       }
       else {
-       passwordmatchflag = false;
+        this.setState(function(state,props) {
+          return{
+          formErrors: Object.assign({}, this.state.formErrors, {password2:'Match passwords'} ),
+          formValidity: Object.assign({}, this.state.formValidity, {passwordmatch:false})
+        }});
         }
 
-        console.log(emailflag, passwordflag, passwordmatchflag);
+    
 
-      if(emailflag==true && passwordflag==true && passwordmatchflag==true)  {
+      if(formValidity.email==true && formValidity.password==true && formValidity.passwordmatch==true)  {
         this.setState({isSubmitDisabled:false})
-        console.log(`email is ${this.state.email} and password is ${this.state.password}`);
       }
       else {
         this.setState({isSubmitDisabled:true})
@@ -89,7 +103,6 @@ export default class Register extends Component {
               
               <div className="centeredtext">REGISTER</div>
             </div>
-            <form>
             <div className="form-group ">
               <input type="email" className="form-control" name="email" placeholder="Enter email id" value={this.state.email} onChange={this.handlechange}></input><br/>
               <div className="invalid-feedback">{this.state.formErrors.email}</div>
@@ -103,7 +116,6 @@ export default class Register extends Component {
               <div className="registertest">Already have an account? <a href="/register">Login here.</a></div>
 
             </div>
-            </form>
           </div> 
         </div> 
       </div>
